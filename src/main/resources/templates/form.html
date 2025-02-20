@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form Submission</title>
+</head>
+<body>
+<h1>Submit Form</h1>
+<form action="/submit" method="post">
+    <input type="hidden" name="token" th:value="${token}" />
+    <label for="inputData">Enter Data:</label>
+    <input type="text" id="inputData" name="inputData" th:field="*{formData.inputData}" />
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

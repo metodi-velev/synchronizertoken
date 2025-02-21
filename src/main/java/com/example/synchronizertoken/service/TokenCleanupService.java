@@ -19,7 +19,8 @@ public class TokenCleanupService {
     @Transactional
     public void cleanupExpiredTokens() {
         LocalDateTime now = LocalDateTime.now();
+        Integer deleted = tokenRepository.numberOfTokensToDelete(now); // Delete expired tokens
         tokenRepository.deleteByExpiryTimeBefore(now); // Delete expired tokens
-        System.out.println("Expired tokens cleaned up at: " + now);
+        System.out.println(deleted + " expired tokens cleaned up at: " + now);
     }
 }

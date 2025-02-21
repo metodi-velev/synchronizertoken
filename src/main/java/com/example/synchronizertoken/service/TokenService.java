@@ -3,17 +3,18 @@ package com.example.synchronizertoken.service;
 import com.example.synchronizertoken.model.Token;
 import com.example.synchronizertoken.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Base64;
 
 @RequiredArgsConstructor // Generates a constructor with required arguments (dependencies)
 @Service
 public class TokenService {
     private static final int TOKEN_EXPIRY_MINUTES = 5;
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     private final TokenRepository tokenRepository;
 
@@ -24,7 +25,10 @@ public class TokenService {
         tokenRepository.deleteBySessionId(sessionId);
 
         // Generate a new token
-        String token = UUID.randomUUID().toString();
+        //String token = UUID.randomUUID().toString();
+        byte[] randomBytes = new byte[32];
+        secureRandom.nextBytes(randomBytes);
+        String token = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
 
         // Set the expiry time
         LocalDateTime createdAt = LocalDateTime.now();
